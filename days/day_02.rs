@@ -60,4 +60,57 @@ fn main() {
     }
 
     println!("Solution 1: {}", total);
+
+    total = 0;
+    for line in input.lines() {
+        let mut split_line = line.split_whitespace();
+        let mut red_max = 0;
+        let mut green_max = 0;
+        let mut blue_max = 0;
+        // Extract the current game number
+        let _game_nb = split_line
+            .nth(1)
+            .unwrap()
+            .strip_suffix(':')
+            .unwrap()
+            .parse::<u32>()
+            .unwrap();
+        while let Some(v) = split_line.next() {
+            // Extract the number of dices
+            let value = v.parse::<u32>().unwrap();
+            // Extract the dices color
+            let dice_color: &str;
+            let l_sp = split_line.next().unwrap();
+            if let Some(dc) = l_sp.strip_suffix(',') {
+                dice_color = dc;
+            } else if let Some(dc) = l_sp.strip_suffix(';') {
+                dice_color = dc;
+            } else {
+                dice_color = l_sp;
+            }
+            // Count the dices by color
+            match dice_color {
+                "red" => {
+                    if value > red_max {
+                        red_max = value;
+                    }
+                }
+                "green" => {
+                    if value > green_max {
+                        green_max = value;
+                    }
+                }
+                "blue" => {
+                    if value > blue_max {
+                        blue_max = value;
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        total += red_max * green_max * blue_max;
+    }
+
+    println!("Solution 2: {}", total);
 }
